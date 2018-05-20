@@ -7,39 +7,51 @@ import {
 from 'redom';
 import AtomAsanaHeader from './views/atom-asana-header';
 import AtomAsanaListView from './views/atom-asana-list-view';
-
+import {
+    dot
+}
+from 'dot';
+var dots = require("dot").process({
+    path: __dirname + "/views"
+});
 
 export default class AtomAsanaView {
 
     constructor(serializedState) {
-        this.extendDocument();
         // Create root element
-        this.element = el('div.atom-asana');
-        this.asanaProvider = new AsanaProvider(atom.config.get(
-            'atom-asana.key'));
+        var that = this;
+        this.element = document.createElement('div');
+
+        this.elementRender = require(
+            __dirname + '/views/atomAsanaHeaderDot'
+        );
+
+        this.asanaProvider = new AsanaProvider(
+            atom.config.get('atom-asana.key')
+        );
+
         this.asanaProjects = [];
         this.asanaTasks = [];
-        this.asanaTaskListConfig = {};
-        this.selectedAsanaProject = null;
-
-        var that = this;
 
         that.asanaProvider.getAllProjects().then(function(projects) {
             that.asanaProjects = that.asanaProjects.concat(projects);
-            that.generateViewForTasks();
-        });
 
-        window.x = this;
-        window.z = el;
-        window.y = AtomAsanaHeader;
-        
-        setInterval(function(){
-            if(that.selectedAsanaProject){
-                that.projectSelected(that.selectedAsanaProject);
-            }
-        }, 6000);
+            that.element = that.generateElement();
+        });
     }
 
+    generateElement() {
+        this.element.textContent = "";
+        
+        var element = document.createElement('div');
+
+        element.innerHTML = this.elementRender({
+            projects: this.asanaProjects,
+            tasks: this.asanaTasks,
+        });
+
+        return element;
+    }
 
     generateViewForTasks() {
         this.element.textContent = "";
@@ -60,21 +72,9 @@ export default class AtomAsanaView {
         var that = this;
         return (new AtomAsanaHeader).get({
             options: this.asanaProjects,
-            config: this.asanaTaskListConfig,
             title: 'Project',
             onChange: function(selectedProjectId) {
                 that.projectSelected(selectedProjectId);
-            },
-            onConfigChange: function(slug, value) {
-                console.log(slug,value);
-                if (slug == 'completed_since') {
-                    if(value){
-                        delete that.asanaTaskListConfig.completed_since;
-                    } else {
-                        that.asanaTaskListConfig.completed_since = 'now';
-                    }
-                    that.projectSelected(that.selectedAsanaProject);
-                }
             }
         });
     }
@@ -92,10 +92,8 @@ export default class AtomAsanaView {
 
         return (new AtomAsanaListView).get({
             tasks: that.asanaTasks,
-            taskStatusChanged: function(taskId, status) {
-                that.TaskStatusChanged(taskId, status, function(){
-                    that.projectSelected(that.selectedAsanaProject);
-                });
+            onChange: function(taskId, isChecked) {
+                that.TaskStatusChanged(taskId, isChecked);
             }
         });
     }
@@ -120,19 +118,18 @@ export default class AtomAsanaView {
 
     projectSelected(projectID) {
         var that = this;
-        
-        that.selectedAsanaProject = projectID;
-        that.asanaProvider.getAllProjectTasks(projectID, that.asanaTaskListConfig)
+        console.log(projectID);
+        that.asanaProvider.getAllProjectTasks(projectID)
             .then(function(tasks) {
                 that.asanaTasks = tasks;
                 that.reRenderListViewForTasks();
             });
     }
 
-    TaskStatusChanged(taskID, status, callback) {
+    TaskStatusChanged(taskID, status) {
         this.asanaProvider.updateTask(taskID, {
             completed: status
-        },callback);
+        });
     }
 
     reRenderListViewForTasks() {
@@ -149,7 +146,7 @@ export default class AtomAsanaView {
     }
 
     getElement() {
-        return this.element;
+        return this.generateElement();
     }
 
     extendDocument() {

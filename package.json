@@ -1,19 +1,20 @@
 {
-    "name": "atom-asana",
-    "main": "./lib/atom-asana",
-    "version": "0.0.0",
-    "description": "A short description of your package",
-    "keywords": [],
-    "activationCommands": {
-        "atom-workspace": "atom-asana:toggle"
-    },
-    "repository": "https://github.com/atom/atom-asana",
-    "license": "MIT",
-    "engines": {
-        "atom": ">=1.0.0 <2.0.0"
-    },
-    "dependencies": {
-        "asana": "*",
-        "redom": "*"
-    }
+  "name": "atom-asana",
+  "main": "./lib/atom-asana",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "activationCommands": {
+    "atom-workspace": "atom-asana:toggle"
+  },
+  "repository": "https://github.com/atom/atom-asana",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "asana": "*",
+    "dot": "^1.1.2",
+    "redom": "*"
+  }
 }

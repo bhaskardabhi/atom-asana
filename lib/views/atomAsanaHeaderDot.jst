@@ -1,0 +1,25 @@
+<div class="atom-asana"> 
+    <div class="flex-container block">
+        <h2 class="inline-block project-label">Project</h2>
+        <select class="project-selector input-select input-lg inline-block">
+            {{~ it.projects :project}}
+            <option value="{{=project.id}}">{{=project.name}}</option>
+            {{~}}
+        </select>
+    </div>
+    <div id="task-container">
+        <ol class="list-group">
+            {{~ it.tasks :task}}
+                <li class="task-list">
+                    <label class="input-label task">
+                        <input class="input-checkbox" 
+                            type="checkbox" value="{{=task.id}}" 
+                            {{? !!task.completed_at }}checked{{?}}
+                        />
+                        <span>{{=task.name}}</span>
+                    </label>
+                </li>
+            {{~}}
+        </ol>
+    </div>
+</div>
