@@ -2,7 +2,7 @@
   "name": "atom-asana",
   "main": "./lib/atom-asana",
   "version": "0.1.1",
-  "description": "A short description of your package",
+  "description": "View your asana projects & their tasks inside Atom.",
   "keywords": [
     "asana",
     "integration",
