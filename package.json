@@ -7,7 +7,7 @@
   "activationCommands": {
     "atom-workspace": "atom-asana:toggle"
   },
-  "repository": "https://github.com/atom/atom-asana",
+  "repository": "https://github.com/bhaskardabhi/atom-asana",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
