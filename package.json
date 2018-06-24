@@ -3,7 +3,11 @@
   "main": "./lib/atom-asana",
   "version": "0.1.0",
   "description": "A short description of your package",
-  "keywords": [],
+  "keywords": [
+    "asana",
+    "integration",
+    "todo"
+  ],
   "activationCommands": {
     "atom-workspace": "atom-asana:toggle"
   },
