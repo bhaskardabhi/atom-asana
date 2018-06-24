@@ -4,8 +4,9 @@ Note: Package is in initial stage
 
 View your asana projects & their tasks inside your Atom.
 
+Demo:
 
-https://media.giphy.com/media/3pZcBj57xIfg8R3ASo/giphy.gif
+![How to use](https://media.giphy.com/media/3pZcBj57xIfg8R3ASo/giphy.gif)
 
 Setup:
 * Get your [Asana api key](https://asana.com/guide/help/api/api#gl-connect)
